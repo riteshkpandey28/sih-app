@@ -1,0 +1,7 @@
+Dark Blue- #172839, #647dad
+Red - #ec3012, #ff8919
+Grey - #d2d2d2
+Black - #0b1d2e
+
+blue-black: 	linear-gradient(to right, #172839, #647dad)
+orange-red: linear-gradient(to right, #ec3012, #ff8919)

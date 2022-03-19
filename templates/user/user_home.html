@@ -1,0 +1,831 @@
+{% include 'header.html' %}
+
+<body>
+
+  {% with messages = get_flashed_messages(category_filter=["preference"]) %}
+  {% if messages %}
+  {% for msg in messages %}
+  <script>
+    window.alert('{{ msg }}');
+  </script>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+  {% with messages = get_flashed_messages(category_filter=["profileupdate"]) %}
+  {% if messages %}
+  {% for msg in messages %}
+  <script>
+    window.alert('{{ msg }}');
+  </script>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+  <!-- ***** Preloader Start ***** -->
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
+
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <!-- ***** Logo Start ***** -->
+            <a href="/" class="logo">
+              <img src="{{ url_for('static', filename='assets/images/logo.png') }}" alt="Chain App Dev">
+            </a>
+            <!-- ***** Logo End ***** -->
+            <!-- ***** Menu Start ***** -->
+            <ul class="nav">
+              <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
+              <li class="scroll-to-section"><a href="#services">Hot Venues</a></li>
+              <li class="scroll-to-section"><a href="#about">Search</a></li>
+              <li>
+                <div class="gradient-button"><a href="/user_logout"><i class="fa fa-sign-in-alt"></i> Log
+                    Out</a></div>
+              </li>
+            </ul>
+            <a class='menu-trigger'>
+              <span>Menu</span>
+            </a>
+            <!-- ***** Menu End ***** -->
+          </nav>
+        </div>
+      </div>
+    </div>
+
+  </header>
+  <!-- ***** Header Area End ***** -->
+
+  <div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-6 align-self-center">
+              <div class="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
+                <div class="row">
+                  <div class="col-lg-12 text-center">
+                    <h2 class="riteshfont" style="font-family: 'Sansita Swashed', cursive; margin-top: -90px;">
+                      Welcome, <br> {{rs[1]}}
+                    </h2>
+                    <h4>Number of Reviews given: {{ reviewno[0] }}</h4>
+                    <div class="border-button">
+                      <br><br> <a href="" class="col-lg-4" data-toggle="modal" data-target="#Modal">View Reviews</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="right-image wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
+                <img src="/profile{{rs[0]}}" alt="" class="riteshimg img-thumbnail rounded-circle">
+              </div>
+              <form action="/home" method="POST" enctype="multipart/form-data" style="z-index: 100;">
+                <div class="row text-center">
+                  <div class="col-lg-12">
+                    <br>
+                    <input type="file" accept="image/*" id="file-multiple-input" name="profilepic"
+                      class="form-control-file" required /> <br><br>
+                  </div>
+                  <div class="col-lg-12">
+                    <div class="gradient-button">
+                      <button type="submit">
+                        Update Profile Picture
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+              <style>
+                input[type="file"]::file-selector-button {
+                  color: white;
+                  padding: 10px 20px;
+                  border-radius: 30px;
+                  background-color: #4583de;
+                  border: none;
+                  outline: none;
+                }
+              </style>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .riteshimg {
+      width: 500px;
+      height: 500px;
+      margin-top: -120px;
+    }
+
+    @media screen and (max-width:600px) {
+      .riteshfont {
+        font-size: 1.8rem !important;
+      }
+
+      .riteshimg {
+        margin-top: 0px !important;
+        width: 300px;
+        height: 300px;
+      }
+    }
+  </style>
+
+  <div id="services" class="services section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+          <div class="section-heading  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.5s">
+            <h4>Hot <em>Venues</em></h4>
+            <img src="{{ url_for('static', filename='assets/images/heading-line-dec.png') }}" alt="">
+            <p>
+              Update your preference and get the hot venues of the town
+            </p>
+
+            <form action="/preference{{rs[0]}}" method="POST" class="filter_form" style="margin-top: 20px;">
+              <div class="row">
+                <div class="col-lg-9">
+                  <div class="box-item" id="hotvenueform">
+                    <select name="venue" id="venues" required class="col-10">
+                      <option value="" disabled selected hidden>{{venueType}}</option>
+                      <option value="hotel">Hotels</option>
+                      <option value="cinema">Cinema Theatres</option>
+                      <option value="garden">Gardens & Parks</option>
+                      <option value="malls">Malls</option>
+                      <option value="market">Market</option>
+                      <option value="grocery">Grocery Shops</option>
+                      <option value="business_parks">Business Parks</option>
+                      <option value="pharmacy">Pharmacy</option>
+                      <option value="hospitals">Hospitals</option>
+                      <option value="school_college">Schools/Colleges</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-3">
+                  <div class="gradient-button">
+                    <button type="submit" style="width: 200px;">
+                      Update
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <style>
+              #hotvenueform {
+                border: 1px solid black;
+                border-radius: 25px;
+                height: 40px;
+                line-height: 38px;
+              }
+            </style>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+
+        {% for venue in hotvenues %}
+        <div class="col-lg-4">
+          <div class="service-item first-service">
+            <div class="hot_img text-center">
+              <img src="/place_profile{{venue[0]}}" class="img-thumbnail" alt="">
+            </div>
+            <h4 class="text-center">{{venue[1]}}</h4>
+            <div class="text-button">
+              {% if loop.index == 1 %}
+              <a href="" data-toggle="modal" data-target="#venue_1">View More</a> <br>
+              {% elif loop.index == 2 %}
+              <a href="" data-toggle="modal" data-target="#venue_2">View More</a> <br>
+              {% elif loop.index == 3 %}
+              <a href="" data-toggle="modal" data-target="#venue_3">View More</a> <br>
+              {% endif %}
+              <a href="https://maps.google.com?saddr=My+Location&daddr={{venue[1]}} {{venue[3]}}">Get Direction <i
+                  class="fa fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .hot_img img {
+      max-height: 150px;
+      max-width: 280px;
+    }
+  </style>
+
+
+  <div class="modal fade" id="venue_1" role="dialog">
+    <div class="modal-dialog" style="min-width: 70%; max-height: 50px;">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          {% set venue = hotvenues[0] %}
+          <h7 class="modal-title" id="exampleModalLongTitle"><b>{{venue[1]}}</b></h7>
+          <a href="" type="gradient-button" class="close" data-dismiss="modal" aria-label="Close">
+            x
+          </a>
+        </div>
+        <div class="modal-body">
+          <div class="content align-content-center">
+            <div class="container">
+              <div class="row bootstrap snippets bootdeys">
+                <div class="col-lg-12">
+                  <div class="comment-wrapper">
+                    <div class="panel-body">
+                      <ul class="media-list">
+
+                        <li class="media row">
+                          <a href="#" class="col-lg-2">
+                            <img src="/place_profile{{venue[0]}}" alt="" class="img-thumbnail rounded-circle" />
+                          </a>
+                          <div class="media-body col-lg-4">
+                            <strong class=" text">{{venue[1]}}</strong> <br>
+                            {{venue[3]}}, {{venue[4]}}, {{venue[5]}} <br>
+                            Contact: {{venue[7]}}
+                          </div>
+                        </li>
+
+                      </ul>
+                    </div>
+                  </div>
+                  <hr />
+                  <form action="/review{{venue[0]}}" method="POST">
+                    <textarea class="form-control" placeholder="write a comment..." rows="3" name="review"></textarea>
+                    <br />
+                    <button type="submit" class="btn btn-info pull-right">
+                      Post
+                    </button>
+                  </form>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="venue_2" role="dialog">
+    <div class="modal-dialog" style="min-width: 70%; max-height: 50px;">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          {% set venue = hotvenues[1] %}
+          <h7 class="modal-title" id="exampleModalLongTitle"><b>{{venue[1]}}</b></h7>
+          <a href="" type="gradient-button" class="close" data-dismiss="modal" aria-label="Close">
+            x
+          </a>
+        </div>
+        <div class="modal-body">
+          <div class="content align-content-center">
+            <div class="container">
+              <div class="row bootstrap snippets bootdeys">
+                <div class="col-lg-12">
+                  <div class="comment-wrapper">
+                    <div class="panel-body">
+                      <ul class="media-list">
+
+                        <li class="media row">
+                          <a href="#" class="col-lg-2">
+                            <img src="/place_profile{{venue[0]}}" alt="" class="img-thumbnail rounded-circle" />
+                          </a>
+                          <div class="media-body col-lg-4">
+                            <strong class=" text">{{venue[1]}}</strong> <br>
+                            {{venue[3]}}, {{venue[4]}}, {{venue[5]}} <br>
+                            Contact: {{venue[7]}}
+                          </div>
+                        </li>
+
+                      </ul>
+                    </div>
+                  </div>
+                  <hr />
+                  <form action="/review{{venue[0]}}" method="POST">
+                    <textarea class="form-control" placeholder="write a comment..." rows="3" name="review"></textarea>
+                    <br />
+                    <button type="submit" class="btn btn-info pull-right">
+                      Post
+                    </button>
+                  </form>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="venue_3" role="dialog">
+    <div class="modal-dialog" style="min-width: 70%; max-height: 50px;">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          {% set venue = hotvenues[2] %}
+          <h7 class="modal-title" id="exampleModalLongTitle"><b>{{venue[1]}}</b></h7>
+          <a href="" type="gradient-button" class="close" data-dismiss="modal" aria-label="Close">
+            x
+          </a>
+        </div>
+        <div class="modal-body">
+          <div class="content align-content-center">
+            <div class="container">
+              <div class="row bootstrap snippets bootdeys">
+                <div class="col-lg-12">
+                  <div class="comment-wrapper">
+                    <div class="panel-body">
+                      <ul class="media-list">
+
+                        <li class="media row">
+                          <a href="#" class="col-lg-2">
+                            <img src="/place_profile{{venue[0]}}" alt="" class="img-thumbnail rounded-circle" />
+                          </a>
+                          <div class="media-body col-lg-4">
+                            <strong class=" text">{{venue[1]}}</strong> <br>
+                            {{venue[3]}}, {{venue[4]}}, {{venue[5]}} <br>
+                            Contact: {{venue[7]}}
+                          </div>
+                        </li>
+
+                      </ul>
+                    </div>
+                  </div>
+                  <hr />
+                  <form action="/review{{venue[0]}}" method="POST">
+                    <textarea class="form-control" placeholder="write a comment..." rows="3" name="review"></textarea>
+                    <br />
+                    <button type="submit" class="btn btn-info pull-right">
+                      Post
+                    </button>
+                  </form>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="about" class="about-us section" style="margin-bottom: 300px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 align-self-center">
+          <div class="section-heading">
+            <h4><em>Advanced</em> Filter</h4>
+            <img src="{{ url_for('static', filename='assets/images/heading-line-dec.png') }}" alt="">
+          </div>
+          <form action="/recommendation" method="POST" class="filter_form">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="box-item">
+                  <select name="state" required class="col-10">
+                    <option value="" disabled selected hidden>Select State</option>
+                    <option value="andhrapradesh">Andhra Pradesh</option>
+                    <option value="arunachalpradesh">Arunachal Pradesh</option>
+                    <option value="assam">Assam</option>
+                    <option value="bihar">Bihar</option>
+                    <option value="chhattisgarh">Chhattisgarh</option>
+                    <option value="goa">Goa</option>
+                    <option value="gujarat">Gujarat</option>
+                    <option value="haryana">Haryana</option>
+                    <option value="himachalpradesh">Himachal Pradesh</option>
+                    <option value="jammukashmir">Jammu and Kashmir</option>
+                    <option value="jharkhan">Jharkhand</option>
+                    <option value="karnataka">Karnataka</option>
+                    <option value="kerala">Kerala</option>
+                    <option value="madhyapradesh">Madhya Pradesh</option>
+                    <option value="maharashtra">Maharashtra</option>
+                    <option value="manipur">Manipur</option>
+                    <option value="meghalaya">Meghalaya</option>
+                    <option value="mizoram">Mizoram</option>
+                    <option value="nagaland">Nagaland</option>
+                    <option value="orissa">Orissa</option>
+                    <option value="punjab">Punjab</option>
+                    <option value="rajasthan">Rajasthan</option>
+                    <option value="sikkim">Sikkim</option>
+                    <option value="tamilnadu">Tamil Nadu</option>
+                    <option value="telangana">Telangana</option>
+                    <option value="tripura">Tripura</option>
+                    <option value="uttarpradesh">Uttar Pradesh</option>
+                    <option value="uttarakhand">Uttarakhand</option>
+                    <option value="westbengal">West Bengal</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="box-item">
+                  <input type="text" name="city" placeholder="Enter City" required class="city col-10">
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="box-item">
+                  <select name="place" id="places" required class="col-10">
+                    <option value="" disabled selected hidden>Select Venue</option>
+                    <option value="hotel">Hotels</option>
+                    <option value="cinema">Cinema Theatres</option>
+                    <option value="garden">Gardens & Parks</option>
+                    <option value="malls">Malls</option>
+                    <option value="market">Market</option>
+                    <option value="grocery">Grocery Shops</option>
+                    <option value="business_parks">Business Parks</option>
+                    <option value="pharmacy">Pharmacy</option>
+                    <option value="hospitals">Hospitals</option>
+                    <option value="school_college">Schools/Colleges</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="box-item">
+                  <button type="button" class="btn dropdown-toggle col-10" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false" style="background-color: white; color: black; padding: 0;">
+                    Select facilities you want
+                  </button>
+                  <div class="dropdown-menu col-10" id="facilities">
+                  </div>
+                  <script>
+                    $('#places').on('change', function () {
+                      console.log($('#places').val())
+                      $('#facilities').html('');
+                      if ($('#places').val() == 'hotel') {
+                        $('#facilities').append('<input type="checkbox" name="check" id="1" value="doors"><label for="1">Automatic Doors</label> <br>');
+                        $('#facilities').append('<input type="checkbox" name="check" id="1" value="entryspace"><label for="1">Wheelchair Entry Space</label> <br>');
+                        $('#facilities').append('<input type="checkbox" name="check" id="1" value="slip"><label for="1">Slip Resistant flooring</label> <br>');
+                        $('#facilities').append('<input type="checkbox" name="check" id="1" value="toilets"><label for="1">Wheelchair Friendly Toilets</label> <br>');
+                        $('#facilities').append('<input type="checkbox" name="check" id="1" value="ramp"><label for="1">Slope/Ramps/Lifts</label> <br>');
+                        $('#facilities').append('<input type="checkbox" name="check" id="1" value="sign"><label for="1">Employee trained with Sign Language</label> <br>');
+                        $('#facilities').append('<input type="checkbox" name="check" id="1" value="blocks"><label for="1">Guiding blocks for person with impaired vision</label> <br>');
+                      }
+                      else if ($('#places').val() == 'garden') {
+                        $('#facilities').append('<input type="checkbox" name="check" id="1" value="seating"><label for="1">Plenty of Seating facilities</label> <br>');
+                        $('#facilities').append('<input type="checkbox" name="check" id="1" value="v"><label for="1">Information board in Braille</label> <br>');
+                        $('#facilities').append('<input type="checkbox" name="check" id="1" value="signages"><label for="1">Information board in Audible Signages</label> <br>');
+                      }
+                      else if ($('#places').val() == 'malls') {
+                        $('#facilities').append('<input type="checkbox" name="check" id="1" value="doors"><label for="1">Automatic Doors</label> <br>');
+                        $('#facilities').append('<input type="checkbox" name="check" id="1" value="slip"><label for="1">Slip Resistant flooring</label> <br>');
+                        $('#facilities').append('<input type="checkbox" name="check" id="1" value="toilets"><label for="1">Wheelchair Friendly Toilets</label> <br>');
+                        $('#facilities').append('<input type="checkbox" name="check" id="1" value="ramp"><label for="1">Slope/Ramps/Lifts</label> <br>');
+                      }
+                      else if ($('#places').val() == 'cinema') {
+                        $('#facilities').append('<input type="checkbox" name="check" id="1" value="walkingsupport"><label for="1">Handrail for walking support</label> <br>');
+                        $('#facilities').append('<input type="checkbox" name="check" id="1" value="seats"><label for="1">Pre-reserve Seats</label> <br>');
+                        $('#facilities').append('<input type="checkbox" name="check" id="1" value="doors"><label for="1">Automatic Doors</label> <br>');
+                        $('#facilities').append('<input type="checkbox" name="check" id="1" value="slip"><label for="1">Slip Resistant flooring</label> <br>');
+                        $('#facilities').append('<input type="checkbox" name="check" id="1" value="toilets"><label for="1">Wheelchair Friendly Toilets</label> <br>');
+                        $('#facilities').append('<input type="checkbox" name="check" id="1" value="ramp"><label for="1">Slope/Ramps/Lifts</label> <br>');
+                      }
+                    });
+                  </script>
+                </div>
+              </div>
+              <div class="col-lg-12" style="margin-top: -50px;">
+                <div class="gradient-button">
+                  <button type="submit" style="width: 200px;">
+                    Search
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-lg-6">
+          <div class="right-image">
+            <!-- <img src="assets/images/about-right-dec.png" alt=""> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .filter_form select,
+    .filter_form input {
+      border: none;
+      outline: none;
+    }
+
+    .filter_form #facilities label,
+    .filter_form #facilities input {
+      margin-left: 10px;
+    }
+  </style>
+
+  <div class="modal fade" id="Modal" role="dialog">
+    <div class="modal-dialog" style="min-width: 70%; max-height: 50px;">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h7 class="modal-title" id="exampleModalLongTitle"><b>Reviews</b></h7>
+          <a href="" type="gradient-button" class="close" data-dismiss="modal" aria-label="Close">
+            x
+          </a>
+        </div>
+        <div class="modal-body">
+          <div class="content align-content-center">
+            <div class="container">
+              <div class="row bootstrap snippets bootdeys">
+                <div class="col-lg-12">
+                  <div class="comment-wrapper">
+                    <div class="panel-body">
+                      <ul class="media-list">
+
+                        {% for review in reviews %}
+                        <li class="media row">
+                          <a href="#" class="col-lg-2">
+                            <img src="/place_profile{{review[1]}}" alt="" class="img-thumbnail rounded-circle" />
+                          </a>
+                          <div class="media-body col-lg-4">
+                            <strong class=" text">{{review[3]}} | {{review[2]}}</strong>
+                            <p>
+                              {{review[0]}}
+                            </p>
+                          </div>
+                        </li>
+                        {% endfor %}
+
+                      </ul>
+                    </div>
+                    <hr />
+                    <div class="clearfix"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="Modal_1" role="dialog">
+    <div class="modal-dialog" style="min-width: 70%; max-height: 50px;">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h7 class="modal-title" id="exampleModalLongTitle"><b>Place</b></h7>
+          <a href="" type="gradient-button" class="close" data-dismiss="modal" aria-label="Close">
+            x
+          </a>
+        </div>
+        <div class="modal-body">
+          <div class="content align-content-center">
+            <div class="container">
+              <div class="row bootstrap snippets bootdeys">
+                <div class="col-lg-12">
+                  <div class="comment-wrapper">
+                    <div class="panel-body">
+                      {% set venue = hotvenues[0] %}
+                      <a href="#" class="col-lg-2">
+                        <img src="/place_profile{{venue[0]}}" alt="" class="img-thumbnail rounded-circle"
+                          style="display: block;margin: 0 auto;width: 250px;height: 250px;" />
+                      </a>
+                      <div class="row mt-3">
+                        <div class="media-body col-lg-6" style="text-align: right;">
+                          <h5>Place:</h5>
+                        </div>
+                        <div class="media-body col-lg-6" style="text-align: left;">
+                          <h5><strong>{{venue[1]}}</strong></h5>
+                        </div>
+                      </div>
+                      <div class="row mt-3">
+                        <div class="media-body col-lg-6" style="text-align: right;">
+                          <h5>Location:</h5>
+                        </div>
+                        <div class="media-body col-lg-6" style="text-align: left;">
+                          <h5>{{venue[3]}} {{venue[4]}} {{venue[5]}} {{venue[6]}}</h5>
+                        </div>
+                      </div>
+                      <div class="row mt-3">
+                        <div class="media-body col-lg-6" style="text-align: right;">
+                          <h5>Contact:</h5>
+                        </div>
+                        <div class="media-body col-lg-6" style="text-align: left;">
+                          <h5>{{venue[7]}}</h5>
+                        </div>
+                      </div>
+                      <div class="row mt-3">
+                        <div class="media-body col-lg-6" style="text-align: right;">
+                          <h5>Facilities</h5>
+                        </div>
+                        <div class="media-body col-lg-6" style="text-align: left;">
+                          <h5>{{venue[9]}}</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="clearfix"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="Modal_2" role="dialog">
+    <div class="modal-dialog" style="min-width: 70%; max-height: 50px;">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h7 class="modal-title" id="exampleModalLongTitle"><b>Reviews</b></h7>
+          <a href="" type="gradient-button" class="close" data-dismiss="modal" aria-label="Close">
+            x
+          </a>
+        </div>
+        <div class="modal-body">
+          <div class="content align-content-center">
+            <div class="container">
+              <div class="row bootstrap snippets bootdeys">
+                <div class="col-lg-12">
+                  <div class="comment-wrapper">
+                    <div class="panel-body">
+                      {% set venue = hotvenues[1] %}
+                      <a href="#" class="col-lg-2">
+                        <img src="/place_profile{{venue[0]}}" alt="" class="img-thumbnail rounded-circle"
+                          style="display: block;margin: 0 auto;width: 250px;height: 250px;" />
+                      </a>
+                      <div class="row mt-3">
+                        <div class="media-body col-lg-6" style="text-align: right;">
+                          <h5>Place:</h5>
+                        </div>
+                        <div class="media-body col-lg-6" style="text-align: left;">
+                          <h5><strong>{{venue[1]}}</strong></h5>
+                        </div>
+                      </div>
+                      <div class="row mt-3">
+                        <div class="media-body col-lg-6" style="text-align: right;">
+                          <h5>Location:</h5>
+                        </div>
+                        <div class="media-body col-lg-6" style="text-align: left;">
+                          <h5>{{venue[3]}} {{venue[4]}} {{venue[5]}} {{venue[6]}}</h5>
+                        </div>
+                      </div>
+                      <div class="row mt-3">
+                        <div class="media-body col-lg-6" style="text-align: right;">
+                          <h5>Contact:</h5>
+                        </div>
+                        <div class="media-body col-lg-6" style="text-align: left;">
+                          <h5>{{venue[7]}}</h5>
+                        </div>
+                      </div>
+                      <div class="row mt-3">
+                        <div class="media-body col-lg-6" style="text-align: right;">
+                          <h5>Facilities</h5>
+                        </div>
+                        <div class="media-body col-lg-6" style="text-align: left;">
+                          <h5>{{venue[9]}}</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="clearfix"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="Modal_3" role="dialog">
+    <div class="modal-dialog" style="min-width: 70%; max-height: 50px;">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h7 class="modal-title" id="exampleModalLongTitle"><b>Reviews</b></h7>
+          <a href="" type="gradient-button" class="close" data-dismiss="modal" aria-label="Close">
+            x
+          </a>
+        </div>
+        <div class="modal-body">
+          <div class="content align-content-center">
+            <div class="container">
+              <div class="row bootstrap snippets bootdeys">
+                <div class="col-lg-12">
+                  <div class="comment-wrapper">
+                    <div class="panel-body">
+                      {% set venue = hotvenues[2] %}
+                      <a href="#" class="col-lg-2">
+                        <img src="/place_profile{{venue[0]}}" alt="" class="img-thumbnail rounded-circle"
+                          style="display: block;margin: 0 auto;width: 250px;height: 250px;" />
+                      </a>
+                      <div class="row mt-3">
+                        <div class="media-body col-lg-6" style="text-align: right;">
+                          <h5>Place:</h5>
+                        </div>
+                        <div class="media-body col-lg-6" style="text-align: left;">
+                          <h5><strong>{{venue[1]}}</strong></h5>
+                        </div>
+                      </div>
+                      <div class="row mt-3">
+                        <div class="media-body col-lg-6" style="text-align: right;">
+                          <h5>Location:</h5>
+                        </div>
+                        <div class="media-body col-lg-6" style="text-align: left;">
+                          <h5>{{venue[3]}} {{venue[4]}} {{venue[5]}} {{venue[6]}}</h5>
+                        </div>
+                      </div>
+                      <div class="row mt-3">
+                        <div class="media-body col-lg-6" style="text-align: right;">
+                          <h5>Contact:</h5>
+                        </div>
+                        <div class="media-body col-lg-6" style="text-align: left;">
+                          <h5>{{venue[7]}}</h5>
+                        </div>
+                      </div>
+                      <div class="row mt-3">
+                        <div class="media-body col-lg-6" style="text-align: right;">
+                          <h5>Facilities</h5>
+                        </div>
+                        <div class="media-body col-lg-6" style="text-align: left;">
+                          <h5>{{venue[9]}}</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="clearfix"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <style>
+    .comment-wrapper .panel-body {
+      width: 90%;
+      max-height: 550px;
+      overflow: hidden;
+      align-items: center;
+    }
+
+    form,
+    hr {
+      width: 90%;
+    }
+
+    .comment-wrapper .media-list .media img {
+      width: 64px;
+      height: 64px;
+      border: 2px solid #e5e7e8;
+      align-items: center;
+    }
+
+    .comment-wrapper .media-list .media {
+      border-bottom: 1px dashed #e5e7e8;
+      margin-bottom: 25px;
+      padding-bottom: 5px;
+    }
+
+    .comment-wrapper .media-list .media .media-body {
+      margin-left: -70px;
+      padding-left: 0;
+    }
+
+    @media screen and (max-width: 600px) {
+      .comment-wrapper .media-list .media .media-body {
+        margin-left: 20px;
+      }
+    }
+  </style>
+
+  {% include 'footer.html' %}
+</body>
+
+</html>

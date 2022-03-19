@@ -1,0 +1,588 @@
+{% include 'header.html' %}
+
+<body>
+
+  {% with messages = get_flashed_messages(category_filter=["register"]) %}
+  {% if messages %}
+  {% for msg in messages %}
+  <script>
+    window.alert('{{ msg }}');
+  </script>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+  {% with messages = get_flashed_messages(category_filter=["invalidOwner"]) %}
+  {% if messages %}
+  {% for msg in messages %}
+  <script>
+    window.alert('{{ msg }}');
+  </script>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+  {% with messages = get_flashed_messages(category_filter=["invalidUser"]) %}
+  {% if messages %}
+  {% for msg in messages %}
+  <script>
+    window.alert('{{ msg }}');
+  </script>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+  <!-- ***** Preloader Start ***** -->
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
+
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <!-- ***** Logo Start ***** -->
+            <a href="/" class="logo">
+              <img src="{{ url_for('static', filename='assets/images/logo.png') }}" alt="Chain App Dev">
+            </a>
+            <!-- ***** Logo End ***** -->
+            <!-- ***** Menu Start ***** -->
+            <ul class="nav">
+              <li>
+                <div class="gradient-button"><a id="modal_trigger" href="#modal"><i class="fa fa-sign-in-alt"></i> Sign
+                    In Now</a></div>
+              </li>
+            </ul>
+            <a class='menu-trigger'>
+              <span>Menu</span>
+            </a>
+            <!-- ***** Menu End ***** -->
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- ***** Header Area End ***** -->
+
+  <div id="modal" class="popupContainer" style="display:none;">
+    <div class="popupHeader">
+      <span class="header_title">Login</span>
+      <span class="modal_close"><i class="fa fa-times"></i></span>
+    </div>
+
+    <section class="popupBody">
+      <!-- Social Login -->
+      <div class="social_login">
+        <div class="">
+          <a href="#" id="user_login" class="social_box fb">
+            <span class="icon"><i class="fas fa-user"></i></span>
+            <span class="icon_title">Login</span>
+
+          </a>
+          <a href="#" id="register_form" class="social_box google">
+            <span class="icon"><i class="fas fa-user-plus"></i></span>
+            <span class="icon_title">Register</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- User Login form -->
+      <div class="user_login">
+        <form action="/user_login" method="POST" id="userLoginForm">
+          <label>Email</label>
+          <input type="email" id="user_email" name="email" required />
+          <br />
+
+          <label>Password</label>
+          <input type="password" id="user_pass" name="password" required />
+          <br />
+
+          <div class="action_btns">
+            <div class="one_half"><a href="#" class="btn back_btn"><i class="fa fa-angle-double-left"></i> Back</a>
+            </div>
+            <div class="one_half last"><a href="#" class="btn btn_red" onclick="userSubmit()">Login</a></div>
+          </div>
+        </form>
+
+        <a href="#" class="forgot_password">Forgot password?</a>
+      </div>
+
+      <!-- Register Form -->
+      <div class="user_register">
+        <form action="/register" method="POST" id="registerForm" enctype="multipart/form-data">
+          <label>Full Name</label>
+          <input type="text" id="reg_username" name="username" />
+          <br />
+
+          <label>Email Address</label>
+          <input type="email" id="reg_email" name="email" />
+          <br />
+
+          <label>Password</label>
+          <input type="password" id="regs_pass" name="password" />
+          <br />
+
+          <label for="">Role</label>
+          <select name="role" id="role">
+            <option value="" disabled selected> -- SELECT -- </option>
+            <option value="user">User</option>
+            <option value="owner">Owner</option>
+          </select>
+          <br>
+
+          <label for="">Profile Picture</label>
+          <input type="file" accept="image/*" name="profile" class="input-text" required>
+          <br>
+
+          <div class="action_btns">
+            <div class="one_half"><a href="#" class="btn back_btn"><i class="fa fa-angle-double-left"></i> Back</a>
+            </div>
+            <div class="one_half last"><a href="#" class="btn btn_red" onclick="registerSubmit()">Register</a></div>
+          </div>
+        </form>
+
+        <script>
+          function userSubmit() {
+            var email = document.getElementById('user_email');
+            var passwd = document.getElementById('user_pass');
+            if(email.value== "" || passwd.value== "")
+            {
+              if(email.value== "") {
+                alert("Email Address cannot be blank!");
+                email.focus();
+              }
+              else if(passwd.value== ""){
+                alert("Password cannot be blank!");
+                passwd.focus();
+              }
+            }
+            else
+            {
+              var email_check = validateEmail(email);
+              if(email_check) {
+                document.getElementById("userLoginForm").submit();
+              }
+              else{
+                alert("Incorrect Email");
+                email.focus();
+              }
+            }
+          }
+          function validateEmail(email) { 
+            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if(re.test(email.value)){
+              return true;
+            }
+            else {
+              // alert("Invalid Email Id");
+              email.focus();
+              return false;
+            }
+          }
+          function registerSubmit() {
+            var email = document.getElementById('reg_email');
+            var fname = document.getElementById('reg_username');
+            var passwd = document.getElementById('regs_pass');
+            var role = document.getElementById('role');
+            if(fname.value== "" || email.value== "" || passwd.value=="" || role.value=="")
+            {
+              if(fname.value== "") {
+                alert("Full Name cannot be blank!");
+                fname.focus();
+              }
+              else if(email.value== "") {
+                alert("Email Address cannot be blank!");
+                email.focus();
+              }
+              else if(passwd.value== "") {
+                alert("Password cannot be blank!");
+                passwd.focus();
+              }
+              else if(role.value== "") {
+                alert("Role cannot be blank!");
+                role.focus();
+              }
+            }
+            else{
+              var email_check = validateEmail(email);
+              if(email_check) {
+                document.getElementById("registerForm").submit();
+              }
+              else{
+                alert("Incorrect Email");
+                email.focus();
+              }
+            }
+          }
+        </script>
+      </div>
+    </section>
+  </div>
+
+  <div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-6 align-self-center">
+              <div class="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h2 class="text-justify riteshfont"
+                      style="font-family: 'Sansita Swashed', cursive; margin-top: -90px;">"Being
+                      differently abled
+                      should not
+                      mean being disqualified from having
+                      access to every aspect
+                      of life"</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="right-image wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
+                <img src="{{ url_for('static', filename='assets/images/bg.png') }}" alt="" class="riteshimg"
+                  style="margin-top: -150px;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="pricing" class="pricing-tables">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+          <div class="section-heading">
+            <h4>
+              We Have The Best Recommendations for
+              <em>Differently abled friendly place</em> You Can Get
+            </h4>
+            <img src="assets/images/heading-line-dec.png" alt="" />
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="container">
+            <div class="card">
+              <div class="imgBx">
+                <img class='pic' src="../static/assets/images/social-media.png">
+              </div>
+              <div class="contentBx">
+                <h4>Preference based Recommendation</h4>
+                <div class="content">
+                  <h3>Find personified places filtered by your preference.</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="container">
+            <div class="card">
+              <div class="imgBx">
+                <img class='pic' src="../static/assets/images/arrows.png">
+              </div>
+              <div class="contentBx">
+                <h4>Maps/Directions</h4>
+                <div class="content">
+                  <h3>Get relaible navigation to reach your searched place.</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="container">
+            <div class="card">
+              <div class="imgBx">
+                <img class='pic' src="../static/assets/images/searching.png">
+              </div>
+              <div class="contentBx">
+                <h4>Advanced Search</h4>
+                <div class="content">
+                  <h3>Specify additional requirements while searching a place.</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 15px;">
+        <div class="col-lg-4">
+          <div class="container">
+            <div class="card">
+              <div class="imgBx">
+                <img class='pic' src="../static/assets/images/star.png">
+              </div>
+              <div class="contentBx">
+                <h4>Explore Popular Places</h4>
+                <div class="content">
+                  <h3>Look at the top and most popular places filtered by maximum reviews.</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="container">
+            <div class="card">
+              <div class="imgBx">
+                <img class='pic' src="../static/assets/images/customize.png">
+              </div>
+              <div class="contentBx">
+                <h4>Customization</h4>
+                <div class="content">
+                  <h3>Build your personalised search preference.</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="container">
+            <div class="card">
+              <div class="imgBx">
+                <img class='pic' src="../static/assets/images/accessibility.png">
+              </div>
+              <div class="contentBx">
+                <h4>Accessibility based Recommendation</h4>
+                <div class="content">
+                  <h3>Find personified places filtered by available accessibility features.</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+    * {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .pic {
+      /* width: 100px; */
+      height: auto;
+
+    }
+
+    .container {
+      position: relative;
+    }
+
+    .container .card {
+      position: relative;
+      /* width: 380px; */
+      height: 450px;
+      background: #ffffff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      margin-bottom: 10px;
+    }
+
+    .container .card:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #339af0;
+      clip-path: circle(150px at 80% 20%);
+      transition: 0.5s ease-in-out;
+    }
+
+    .container .card:hover:before {
+      clip-path: circle(300px at 80% -20%);
+    }
+
+    .container .card:after {
+      content: '';
+      position: absolute;
+      top: 30%;
+      left: -20%;
+      font-size: 12em;
+      font-weight: 800;
+      font-style: italic;
+      color: rgba(255, 255, 25, 0.05);
+
+    }
+
+    .container .card .imgBx {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10000;
+      width: 100%;
+      height: 220px;
+      transition: 0.5s;
+    }
+
+    .container .card:hover .imgBx {
+      top: 0%;
+      transform: translateY(0%);
+      z-index: 1;
+    }
+
+    .container .card .imgBx img {
+      z-index: -1;
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 150px;
+    }
+
+    .container .card .contentBx {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 100px;
+      text-align: center;
+      transition: 1s;
+      z-index: 1;
+    }
+
+    .container .card:hover .contentBx {
+      height: 210px;
+    }
+
+    .container .card .contentBx h2 {
+      position: relative;
+      font-weight: 400;
+      letter-spacing: 0px;
+      color: #000;
+      margin: 0;
+    }
+
+    .container .card .contentBx .content,
+    .container .card .contentBx .color {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px 20px;
+      transition: 0.5s;
+      opacity: 0;
+      visibility: hidden;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .container .card:hover .contentBx .content {
+      opacity: 1;
+      visibility: visible;
+      transition-delay: 0.5s;
+    }
+
+    .container .card:hover .contentBx .color {
+      opacity: 1;
+      visibility: visible;
+      transition-delay: 0.6s;
+    }
+
+    .container .card .contentBx .content h3,
+    .container .card .contentBx .color h3 {
+      color: #0089c9;
+      font-weight: 300;
+      margin-top: 13%;
+      font-size: 20px;
+      letter-spacing: 0px;
+      margin-right: 10px;
+    }
+
+    .container .card .contentBx .content span {
+      width: 26px;
+      height: 26px;
+      text-align: center;
+      line-height: 26px;
+      font-size: 14px;
+      display: inline-block;
+      color: #111;
+      background: #fff;
+      margin: 0 5px;
+      transition: 0.5s;
+      color: #111;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .container .card .contentBx .content span:hover {
+      background: #9bdc28;
+    }
+
+    .container .card .contentBx .color span {
+      width: 20px;
+      height: 20px;
+      background: #ff0;
+      border-radius: 50%;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+
+    .container .card .contentBx .color span:nth-child(2) {
+      background: #9bdc28;
+    }
+
+    .container .card .contentBx .color span:nth-child(3) {
+      background: #03a9f4;
+    }
+
+    .container .card .contentBx .color span:nth-child(4) {
+      background: #e91e63;
+    }
+
+    .container .card .contentBx a {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #fff;
+      border-radius: 4px;
+      margin-top: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      color: #111;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: 0.5s;
+      margin-top: 0;
+    }
+
+    .container .card:hover .contentBx a {
+      opacity: 1;
+      transform: translateY(0px);
+      transition-delay: 0.75s;
+
+    }
+
+    @media screen and (max-width:600px) {
+      .riteshfont {
+        font-size: 1.8rem !important;
+      }
+
+      .riteshimg {
+        margin-top: 0px !important;
+      }
+    }
+  </style>
+
+
+  {% include 'footer.html' %}
+</body>
+
+</html>

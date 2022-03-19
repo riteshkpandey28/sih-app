@@ -1,0 +1,99 @@
+{% include 'header.html' %}
+
+<body>
+
+    {% with messages = get_flashed_messages(category_filter=["newplace"]) %}
+    {% if messages %}
+    {% for msg in messages %}
+    <script>
+        window.alert('{{ msg }}');
+    </script>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    {% with messages = get_flashed_messages(category_filter=["delete"]) %}
+    {% if messages %}
+    {% for msg in messages %}
+    <script>
+        window.alert('{{ msg }}');
+    </script>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    {% with messages = get_flashed_messages(category_filter=["updateplace"]) %}
+    {% if messages %}
+    {% for msg in messages %}
+    <script>
+        window.alert('{{ msg }}');
+    </script>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    {% include 'owner/nav.html' %}
+
+    <div id="about" class="places-info section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 align-self-center">
+                    <div class="section-heading row">
+                        <h4 class="col-lg-9"><em>Your</em> Places</h4>
+                        <div class="border-button col-lg-3">
+                            <a href="/owner_new_place"><i class="fa fa-plus"></i> Add New Place</a>
+                        </div>
+
+                        <img src="{{ url_for('static', filename='assets/images/heading-line-dec.png') }}" alt="">
+                    </div>
+
+                    <div class="placestable" style="margin-top: 25px;">
+
+                        <!-- MAKE TABLE HERE -->
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped table-responsive text-center table-curved ">
+                                <tr class="table-info" style="height: 50px;">
+                                    <th>#</th>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Contact</th>
+                                    <th>Location</th>
+                                    <th>Type of Venue</th>
+                                    <th>Reviews</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+
+                                {% for i in place %}
+                                <tr>
+                                    <td>{{loop.index}}</td>
+                                    <td> <img class="rounded-circle" style="width: 38px; height: 38px;"
+                                            src="/place_profile{{i[0]}}" alt=""></td>
+                                    <td class="text-capitalize">{{i[1]}}</td>
+                                    <td class="text-capitalize">{{i[7]}}</td>
+                                    <td class="text-capitalize">{{i[3]}}, {{i[4]}}, {{i[5]}}</td>
+                                    <td class="text-capitalize">{{i[8]}}</td>
+                                    <td> <a href="/owner_review_place{{i[0]}}"><i class="bi bi-star-fill"
+                                                style="color: gold;"></i> </td>
+                                    <td> <a href="/owner_update_place{{i[0]}}"><i class="bi bi-pencil"
+                                                style="color: green;"></i></a> </td>
+                                    <td> <a href="/owner_delete_place{{i[0]}}"><i class="bi bi-trash"
+                                                style="color: red;"></i></a> </td>
+                                </tr>
+                                {% endfor %}
+
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% include 'footer.html' %}
+</body>
+
+</html>

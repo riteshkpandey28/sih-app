@@ -1,0 +1,146 @@
+{% include 'header.html' %}
+
+<style>
+    html,
+    body {
+        min-height: 100%;
+        min-width: 100%;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    .comment-wrapper .panel-body {
+        max-height: 55vh;
+        overflow: auto;
+        align-items: center;
+    }
+
+    .comment-wrapper .media-list .media img {
+        width: 64px;
+        height: 64px;
+        border: 2px solid #e5e7e8;
+        align-items: center;
+    }
+
+    .comment-wrapper .media-list .media {
+        border-bottom: 1px dashed #efefef;
+        margin-bottom: 25px;
+    }
+</style>
+
+<body>
+
+    {% include 'owner/nav.html' %}
+
+    <div id="about" class="places-info section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 align-self-center">
+                    <div class="section-heading row">
+                        <h4><em>{{name[0]}}</em> - Analysis</h4>
+
+                        <img src="{{ url_for('static', filename='assets/images/heading-line-dec.png') }}" alt="">
+                    </div>
+
+                    <div class="placestable" style="margin-top: 25px;">
+
+                        <div class="row">
+                            <div class=" col-lg-4">
+                                <div class="card xm-auto br-0">
+                                    <div class="card-body">
+                                        <h4 class="card-title box-title">Nature of Reviews</h4>
+                                        <canvas id="myChart" width="400" height="400"></canvas>
+                                        <style>
+                                            @media screen and (max-width: 600px) {
+                                                canvas {
+                                                    max-width: 350px;
+                                                    max-height: 350px;
+                                                }
+                                            }
+                                        </style>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="card" style="height: 65vh">
+                                    <div class="card-body">
+                                        <h4 class="card-title box-title">Reviews</h4>
+                                        <div class="card-content">
+                                            <div class="messenger-box">
+                                                <div class="container">
+                                                    <div class="row bootstrap snippets bootdeys">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <div class="comment-wrapper">
+                                                                <div class="panel-body">
+                                                                    <ul class="media-list">
+
+                                                                        {% for rs in reviews %}
+                                                                        <li class="media">
+                                                                            <a href="#" class="pull-left">
+                                                                                <img src="https://bootdey.com/img/Content/user_1.jpg"
+                                                                                    alt="" class="img-circle" />
+                                                                            </a>
+                                                                            <div class="media-body">
+                                                                                <strong class="text">{{rs[1]}}</strong>
+                                                                                <p>
+                                                                                    {{rs[2]}}
+                                                                                </p>
+                                                                            </div>
+                                                                        </li>
+                                                                        {% endfor %}
+
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /.messenger-box -->
+                                        </div>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                                <!-- /.card -->
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% include 'footer.html' %}
+
+    <!--  Chart js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.7.3/dist/Chart.bundle.min.js"></script>
+
+    <script>
+        var ctx = document.getElementById("myChart");
+        var myChart = new Chart(ctx, {
+            type: "pie",
+            data: {
+                labels: ["Positive", "Negative"],
+                datasets: [
+                    {
+                        label: "Nature of Reviews",
+                        data: [{{ positive[0]}}, {{ negative[0]}}],
+            backgroundColor: ["#3080d0", "#ff6384"],
+            borderWidth: 1,
+        },
+            ],
+          },
+        options: {
+            cutoutPercentage: 50,
+                responsive: false,
+          },
+        });
+    </script>
+
+</body>
+
+</html>

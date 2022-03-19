@@ -1,0 +1,46 @@
+<!-- ***** Preloader Start ***** -->
+<div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+        <span class="dot"></span>
+        <div class="dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</div>
+<!-- ***** Preloader End ***** -->
+
+<!-- ***** Header Area Start ***** -->
+<header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <!-- ***** Logo Start ***** -->
+                    <a href="/" class="logo">
+                        <img src="{{ url_for('static', filename='assets/images/logo.png') }}" alt="Chain App Dev">
+                    </a>
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                        <li class="scroll-to-section"><a href="/home" {% if request.path=='/home' %} class="active" {%
+                                endif %}>Home</a></li>
+                        <li class="scroll-to-section"><a href="/owner_place" {% if request.path=='/owner_place' %}
+                                class="active" {% endif %} {% if request.path=='/owner_new_place' %} class="active" {%
+                                endif %}>Places</a></li>
+                        <li>
+                            <div class="gradient-button"><a href="/owner_logout"><i class="fa fa-sign-in-alt"></i>
+                                    Log Out</a></div>
+                        </li>
+                    </ul>
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                    <!-- ***** Menu End ***** -->
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- ***** Header Area End ***** -->
