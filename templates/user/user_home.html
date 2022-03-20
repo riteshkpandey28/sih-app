@@ -162,7 +162,7 @@
               <div class="row">
                 <div class="col-lg-9">
                   <div class="box-item" id="hotvenueform">
-                    <select name="venue" id="venues" required class="col-10">
+                    <select name="venue" id="venues" required class="col-10" onclick="tts('Update you preferences')">
                       <option value="" disabled selected hidden>{{venueType}}</option>
                       <option value="hotel">Hotels</option>
                       <option value="cinema">Cinema Theatres</option>
@@ -179,7 +179,7 @@
                 </div>
                 <div class="col-lg-3">
                   <div class="gradient-button">
-                    <button type="submit" style="width: 200px;">
+                    <button type="submit" style="width: 200px;" onclick="tts('Updating')">
                       Update
                     </button>
                   </div>
@@ -212,13 +212,13 @@
             <h4 class="text-center">{{venue[1]}}</h4>
             <div class="text-button">
               {% if loop.index == 1 %}
-              <a href="" data-toggle="modal" data-target="#venue_1">View More</a> <br>
+              <a href="" data-toggle="modal" data-target="#venue_1" onclick="tts('This is {{venue[1]}}')">View More</a> <br>
               {% elif loop.index == 2 %}
-              <a href="" data-toggle="modal" data-target="#venue_2">View More</a> <br>
+              <a href="" data-toggle="modal" data-target="#venue_1" onclick="tts('This is {{venue[1]}}')">View More</a> <br>
               {% elif loop.index == 3 %}
-              <a href="" data-toggle="modal" data-target="#venue_3">View More</a> <br>
+              <a href="" data-toggle="modal" data-target="#venue_1" onclick="tts('This is {{venue[1]}}')">View More</a> <br>
               {% endif %}
-              <a href="https://maps.google.com?saddr=My+Location&daddr={{venue[1]}} {{venue[3]}}">Get Direction <i
+              <a href="https://maps.google.com?saddr=My+Location&daddr={{venue[1]}} {{venue[3]}}" onclick="tts('Navigating to {venue[1]}}')">Get Direction <i
                   class="fa fa-arrow-right"></i></a>
             </div>
           </div>
@@ -826,6 +826,11 @@
   </style>
 
   {% include 'footer.html' %}
+  <script>
+    $(document).ready(function(){
+      tts("Welcome {{rs[1]}}");
+    });
+  </script> 
 </body>
 
 </html>

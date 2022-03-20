@@ -84,12 +84,12 @@
       <!-- Social Login -->
       <div class="social_login">
         <div class="">
-          <a href="#" id="user_login" class="social_box fb">
+          <a href="#" id="user_login" onclick="speak_login()" class="social_box fb">
             <span class="icon"><i class="fas fa-user"></i></span>
             <span class="icon_title">Login</span>
 
           </a>
-          <a href="#" id="register_form" class="social_box google">
+          <a href="#" id="register_form" onclick="speak_register()" class="social_box google">
             <span class="icon"><i class="fas fa-user-plus"></i></span>
             <span class="icon_title">Register</span>
           </a>
@@ -100,11 +100,11 @@
       <div class="user_login">
         <form action="/user_login" method="POST" id="userLoginForm">
           <label>Email</label>
-          <input type="email" id="user_email" name="email" required />
+          <input type="email" id="user_email" name="email" onclick="tts('This is Email Address')" required />
           <br />
 
           <label>Password</label>
-          <input type="password" id="user_pass" name="password" required />
+          <input type="password" id="user_pass" onclick="tts('This is Password')" name="password" required />
           <br />
 
           <div class="action_btns">
@@ -121,19 +121,19 @@
       <div class="user_register">
         <form action="/register" method="POST" id="registerForm" enctype="multipart/form-data">
           <label>Full Name</label>
-          <input type="text" id="reg_username" name="username" />
+          <input type="text" id="reg_username" name="username" onclick="tts('Enter you Full Name')" />
           <br />
 
           <label>Email Address</label>
-          <input type="email" id="reg_email" name="email" />
+          <input type="email" id="reg_email" name="email" onclick="tts('Enter you Email Address')" />
           <br />
 
           <label>Password</label>
-          <input type="password" id="regs_pass" name="password" />
+          <input type="password" id="regs_pass" name="password" onclick="tts('Enter you Password')" />
           <br />
 
           <label for="">Role</label>
-          <select name="role" id="role">
+          <select name="role" id="role" onclick="tts('Select your role')">
             <option value="" disabled selected> -- SELECT -- </option>
             <option value="user">User</option>
             <option value="owner">Owner</option>
@@ -141,7 +141,7 @@
           <br>
 
           <label for="">Profile Picture</label>
-          <input type="file" accept="image/*" name="profile" class="input-text" required>
+          <input type="file" accept="image/*" name="profile" onclick="tts('Choose your Profile Picture')" class="input-text" required>
           <br>
 
           <div class="action_btns">
@@ -150,7 +150,7 @@
             <div class="one_half last"><a href="#" class="btn btn_red" onclick="registerSubmit()">Register</a></div>
           </div>
         </form>
-
+        
         <script>
           function userSubmit() {
             var email = document.getElementById('user_email');
@@ -160,10 +160,12 @@
               if(email.value== "") {
                 alert("Email Address cannot be blank!");
                 email.focus();
+                tts('Email Address cannot be blank!');
               }
               else if(passwd.value== ""){
                 alert("Password cannot be blank!");
                 passwd.focus();
+                tts('Password cannot be blank!');
               }
             }
             else
@@ -175,6 +177,7 @@
               else{
                 alert("Incorrect Email");
                 email.focus();
+                tts('Incorrect Email');
               }
             }
           }
@@ -199,28 +202,35 @@
               if(fname.value== "") {
                 alert("Full Name cannot be blank!");
                 fname.focus();
+                tts("Full Name cannot be blank!");
+                
               }
               else if(email.value== "") {
                 alert("Email Address cannot be blank!");
                 email.focus();
+                tts("Email Address cannot be blank!");
               }
               else if(passwd.value== "") {
                 alert("Password cannot be blank!");
                 passwd.focus();
+                tts("Password cannot be blank!");
               }
               else if(role.value== "") {
                 alert("Role cannot be blank!");
                 role.focus();
+                tts("Role cannot be blank!");
               }
             }
             else{
               var email_check = validateEmail(email);
               if(email_check) {
+                tts("Registeration Successful");
                 document.getElementById("registerForm").submit();
               }
               else{
                 alert("Incorrect Email");
                 email.focus();
+                tts("Incorrect Email Entered");
               }
             }
           }
@@ -583,6 +593,29 @@
 
 
   {% include 'footer.html' %}
+  <script>
+    $(document).ready(function(){
+      // alert("Hello");
+      tts("Hi I am your, Humsafar");
+      tts("I will guide and help you");
+      tts("");
+    });
+
+    function speak_login(){
+      tts("This is the Login Page");
+      var email = document.getElementById('user_email');
+      email.focus();
+    }
+
+    function speak_register(){
+      tts("This is the Registeration Page");
+      var fname = document.getElementById('reg_username');
+      fname.focus();
+    }
+
+  </script>
+
 </body>
 
 </html>
+
