@@ -141,7 +141,8 @@
           <br>
 
           <label for="">Profile Picture</label>
-          <input type="file" accept="image/*" name="profile" onclick="tts('Choose your Profile Picture')" class="input-text" required>
+          <input type="file" accept="image/*" name="profile" onclick="tts('Choose your Profile Picture')"
+            class="input-text" required>
           <br>
 
           <div class="action_btns">
@@ -150,40 +151,38 @@
             <div class="one_half last"><a href="#" class="btn btn_red" onclick="registerSubmit()">Register</a></div>
           </div>
         </form>
-        
+
         <script>
           function userSubmit() {
             var email = document.getElementById('user_email');
             var passwd = document.getElementById('user_pass');
-            if(email.value== "" || passwd.value== "")
-            {
-              if(email.value== "") {
+            if (email.value == "" || passwd.value == "") {
+              if (email.value == "") {
                 alert("Email Address cannot be blank!");
                 email.focus();
                 tts('Email Address cannot be blank!');
               }
-              else if(passwd.value== ""){
+              else if (passwd.value == "") {
                 alert("Password cannot be blank!");
                 passwd.focus();
                 tts('Password cannot be blank!');
               }
             }
-            else
-            {
+            else {
               var email_check = validateEmail(email);
-              if(email_check) {
+              if (email_check) {
                 document.getElementById("userLoginForm").submit();
               }
-              else{
+              else {
                 alert("Incorrect Email");
                 email.focus();
                 tts('Incorrect Email');
               }
             }
           }
-          function validateEmail(email) { 
+          function validateEmail(email) {
             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            if(re.test(email.value)){
+            if (re.test(email.value)) {
               return true;
             }
             else {
@@ -197,37 +196,36 @@
             var fname = document.getElementById('reg_username');
             var passwd = document.getElementById('regs_pass');
             var role = document.getElementById('role');
-            if(fname.value== "" || email.value== "" || passwd.value=="" || role.value=="")
-            {
-              if(fname.value== "") {
+            if (fname.value == "" || email.value == "" || passwd.value == "" || role.value == "") {
+              if (fname.value == "") {
                 alert("Full Name cannot be blank!");
                 fname.focus();
                 tts("Full Name cannot be blank!");
-                
+
               }
-              else if(email.value== "") {
+              else if (email.value == "") {
                 alert("Email Address cannot be blank!");
                 email.focus();
                 tts("Email Address cannot be blank!");
               }
-              else if(passwd.value== "") {
+              else if (passwd.value == "") {
                 alert("Password cannot be blank!");
                 passwd.focus();
                 tts("Password cannot be blank!");
               }
-              else if(role.value== "") {
+              else if (role.value == "") {
                 alert("Role cannot be blank!");
                 role.focus();
                 tts("Role cannot be blank!");
               }
             }
-            else{
+            else {
               var email_check = validateEmail(email);
-              if(email_check) {
+              if (email_check) {
                 tts("Registeration Successful");
                 document.getElementById("registerForm").submit();
               }
-              else{
+              else {
                 alert("Incorrect Email");
                 email.focus();
                 tts("Incorrect Email Entered");
@@ -594,20 +592,21 @@
 
   {% include 'footer.html' %}
   <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
       // alert("Hello");
-      tts("Hi I am your, Humsafar");
-      tts("I will guide and help you");
-      tts("");
+      body_load();
     });
+    function body_load() {
+      tts("Hi I am your Humsafar I will guide and help you");
+    }
 
-    function speak_login(){
+    function speak_login() {
       tts("This is the Login Page");
       var email = document.getElementById('user_email');
       email.focus();
     }
 
-    function speak_register(){
+    function speak_register() {
       tts("This is the Registeration Page");
       var fname = document.getElementById('reg_username');
       fname.focus();
@@ -618,4 +617,3 @@
 </body>
 
 </html>
-
